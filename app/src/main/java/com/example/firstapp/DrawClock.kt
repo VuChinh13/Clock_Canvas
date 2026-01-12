@@ -22,7 +22,18 @@ class DrawClock(context: Context, attrs: AttributeSet? = null) : View(context, a
     private var cx = 0f
     private var cy = 0f
     private var radius = 0f
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val clockBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 8f
+        color = Color.BLACK
+    }
+    private val clockNumberPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = Color.BLACK
+        textAlign = Paint.Align.CENTER
+        textSize = widthClock / 10f
+    }
+    private val handPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
         attrs?.let {
@@ -52,11 +63,7 @@ class DrawClock(context: Context, attrs: AttributeSet? = null) : View(context, a
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 8f
-        paint.color = Color.BLACK
-
-        canvas.drawCircle(cx, cy, radius, paint)
+        canvas.drawCircle(cx, cy, radius, clockBorderPaint)
         drawFaceClock(cx, cy, canvas, radius)
 
         val calendar = Calendar.getInstance()
@@ -107,16 +114,11 @@ class DrawClock(context: Context, attrs: AttributeSet? = null) : View(context, a
         canvas: Canvas,
         radius: Float
     ) {
-        paint.style = Paint.Style.FILL
-        paint.color = Color.BLACK
-        paint.textAlign = Paint.Align.CENTER
-        paint.textSize = widthClock / 10f
-
         for (i in 1..12) {
             val angle = Math.toRadians((i * 30 - 90).toDouble())
             val x = cx + cos(angle).toFloat() * radius * 0.8f
-            val y = cy + sin(angle).toFloat() * radius * 0.8f + paint.textSize / 3
-            canvas.drawText(i.toString(), x, y, paint)
+            val y = cy + sin(angle).toFloat() * radius * 0.8f + clockNumberPaint.textSize / 3
+            canvas.drawText(i.toString(), x, y, clockNumberPaint)
         }
     }
 
@@ -129,8 +131,8 @@ class DrawClock(context: Context, attrs: AttributeSet? = null) : View(context, a
         stroke: Float,
         color: Int
     ) {
-        paint.color = color
-        paint.strokeWidth = stroke
+        handPaint.color = color
+        handPaint.strokeWidth = stroke
 
         canvas.withRotation(angle, cx, cy) {
             drawLine(
@@ -138,7 +140,7 @@ class DrawClock(context: Context, attrs: AttributeSet? = null) : View(context, a
                 cy,
                 cx,
                 cy - length,
-                paint
+                handPaint
             )
         }
     }
