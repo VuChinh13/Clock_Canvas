@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstApp">
         <activity
-            android:name=".TestCoroutineActivity"
+            android:name=".testflow.TestFlowActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +20,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".TestCoroutineActivity"
+            android:exported="false" />
+        <activity
             android:name=".ClockActivityFirst"
             android:exported="true" />
     </application>
-
 </manifest>

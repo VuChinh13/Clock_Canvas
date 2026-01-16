@@ -109,11 +109,11 @@ class TestCoroutineActivity : AppCompatActivity() {
                 countPrime2
             }
 
-//            val value1 = prime1.await()
-//            val value2 = prime2.await()
-//
-//            Log.d("CheckJob", "Result: $value1")
-//            Log.d("CheckJob", "Result: $value2")
+            val value1 = prime1.await()
+            val value2 = prime2.await()
+
+            Log.d("CheckJob", "Result: $value1")
+            Log.d("CheckJob", "Result: $value2")
         }
     }
 

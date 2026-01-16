@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".testflow.TestFlowActivity">
+
+
+    <Button
+        android:id="@+id/btnClickStateFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button Test StateFlow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnClickSharedFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button Test SharedFlow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClickStateFlow" />
+
+    <Button
+        android:id="@+id/btnClickCallBackFlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button Test CallBackFlow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClickSharedFlow" />
+
+    <Button
+        android:id="@+id/btnClickSuspendCoroutine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button Test SuspendCoroutine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClickCallBackFlow" />
+
+    <TextView
+        android:id="@+id/txtContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/btnClickStateFlow"
+        app:layout_constraintLeft_toLeftOf="@id/btnClickStateFlow"
+        app:layout_constraintRight_toRightOf="@id/btnClickStateFlow" />
+
+    <TextView
+        android:id="@+id/txtCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:hint="0"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/btnClickStateFlow"
+        app:layout_constraintRight_toRightOf="@id/btnClickStateFlow"
+        app:layout_constraintTop_toBottomOf="@id/txtContent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
