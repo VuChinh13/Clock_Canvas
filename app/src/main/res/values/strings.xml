@@ -1,18 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="welcome_title">こんにちは</string>
+    <string name="welcome_message">FirstAppへようこそ。続行するにはログインしてください。</string>
+    <string name="btn_login">ログイン</string>
+    <string name="btn_logout">ログアウト</string>
+    <string name="error_network">ネットワークエラーです。もう一度お試しください。</string>
+    <string name="login_success">ログインに成功しました！</string>
+    <string name="select_language">言語を選択</string>
+    <string name="english">英語</string>
+    <string name="vietnamese">ベトナム語</string>
     <string name="app_name" translatable="false">Multi Language Passive</string>
-
-    <string name="welcome_title">Welcome</string>
-    <string name="welcome_message">
-        Welcome to FirstApp. Please sign in to continue.
-    </string>
-
-    <string name="btn_login">Login</string>
-    <string name="btn_logout">Logout</string>
-
-    <string name="error_network">Network error. Please try again.</string>
-    <string name="login_success">Login successful!</string>
-    <string name="select_language">Select language</string>
-    <string name="english">English</string>
-    <string name="vietnamese">Vietnamese</string>
-    <string name="japanese">Japanese</string>
+    <string name="japanese">日本語</string>
 </resources>

@@ -1,12 +1,14 @@
 package com.example.firstapp.testmutilanguage
 
 import android.os.Bundle
+import android.os.LocaleList
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.example.firstapp.R
 import com.example.firstapp.databinding.ActivityTestMultiLanguageBinding
+import java.util.Locale
 
 class TestMultiLanguageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTestMultiLanguageBinding
@@ -15,7 +17,7 @@ class TestMultiLanguageActivity : AppCompatActivity() {
         binding = ActivityTestMultiLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // initAppLanguage()
+        initAppLanguage()
 
         with(binding) {
             btnVietnamese.setOnClickListener {
@@ -53,27 +55,56 @@ class TestMultiLanguageActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(localeList)
     }
 
+    fun initAppLanguage() {
+        val currentLocales = AppCompatDelegate.getApplicationLocales()
+        if (!currentLocales.isEmpty) return
+        val initialLocale = detectInitialLanguage() ?: return
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(initialLocale))
+    }
 
-//    fun initAppLanguage() {
-//        val currentLocales = AppCompatDelegate.getApplicationLocales()
-//        if (!currentLocales.isEmpty) return
+    fun detectInitialLanguage(): Locale? {
+        val locales = LocaleList.getDefault()
+
+        for (i in 0 until locales.size()) {
+            val locale = locales[i]
+            when (locale.language) {
+                "ja" -> return Locale.JAPAN
+                "en" -> return Locale.US
+                "vi" -> return Locale.forLanguageTag("vi")
+            }
+        }
+
+        return null
+    }
+
+//    fun detectInitialLanguage(): Locale{
+//        val systemLocales = LocaleList.getDefault()
+//        val supportLocales = getSupportedLocales()
 //
-//        val localeManager = getSystemService(LocaleManager::class.java)
-//        val systemLocales = localeManager.systemLocales
+//        for (i in 0 until supportLocales.size){
+//            val systemLocale = systemLocales[i]
 //
-//        AppCompatDelegate.setApplicationLocales(
-//            LocaleListCompat.wrap(systemLocales)
-//        )
+//            supportLocales.firstOrNull {
+//                it.language == systemLocale.language
+//            }?.let { return it }
+//        }
+//
+//        return supportLocales.firstOrNull() ?: Locale.getDefault()
 //    }
 
-
-//    fun initAppLanguage() {
-//        val currentLocales = AppCompatDelegate.getApplicationLocales()
-//        if (!currentLocales.isEmpty) return
-//        val supported = setOf("en", "vi", "ja")
-//        val systemLang = Locale.getDefault().language
-//        val targetLang = if (systemLang in supported) { systemLang } else { "ja" }
-//        AppCompatDelegate.setApplicationLocales( LocaleListCompat.forLanguageTags(targetLang) )
-//
-//    }
+//    fun getSupportedLocales(): List<Locale> =
+//        resources.getXml(R.xml.locales_config).use { parser ->
+//            generateSequence {
+//                if (parser.next() != XmlPullParser.START_TAG) null
+//                else if (parser.name == "locale")
+//                    parser.getAttributeValue(
+//                        "http://schemas.android.com/apk/res/android",
+//                        "name"
+//                    )
+//                else null
+//            }
+//                .filterNotNull()
+//                .map(Locale::forLanguageTag)
+//                .toList()
+//        }
 }
