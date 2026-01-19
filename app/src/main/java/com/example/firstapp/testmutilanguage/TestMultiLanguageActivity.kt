@@ -53,6 +53,7 @@ class TestMultiLanguageActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(localeList)
     }
 
+
 //    fun initAppLanguage() {
 //        val currentLocales = AppCompatDelegate.getApplicationLocales()
 //        if (!currentLocales.isEmpty) return
@@ -63,5 +64,16 @@ class TestMultiLanguageActivity : AppCompatActivity() {
 //        AppCompatDelegate.setApplicationLocales(
 //            LocaleListCompat.wrap(systemLocales)
 //        )
+//    }
+
+
+//    fun initAppLanguage() {
+//        val currentLocales = AppCompatDelegate.getApplicationLocales()
+//        if (!currentLocales.isEmpty) return
+//        val supported = setOf("en", "vi", "ja")
+//        val systemLang = Locale.getDefault().language
+//        val targetLang = if (systemLang in supported) { systemLang } else { "ja" }
+//        AppCompatDelegate.setApplicationLocales( LocaleListCompat.forLanguageTags(targetLang) )
+//
 //    }
 }
