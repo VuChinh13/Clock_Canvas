@@ -7,11 +7,15 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstApp">
         <activity
-            android:name=".testflow.TestFlowActivity"
+            android:name=".testmutilanguage.TestMultiLanguageActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".testmutilanguage.TestMultiLanguageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +24,33 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".testlaunchmode.StandardActivity"
+            android:exported="false"
+            android:launchMode="standard" />
+        <activity
+            android:name=".testlaunchmode.SingleTopActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".testlaunchmode.SingleTaskActivity"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".testlaunchmode.SingleInstanceActivity"
+            android:exported="true"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".testlaunchmode.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".testflow.TestFlowActivity"
+            android:exported="true" />
+        <activity
             android:name=".TestCoroutineActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ClockActivityFirst"
             android:exported="true" />
     </application>
+
 </manifest>

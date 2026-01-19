@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_title">Xin chào</string>
+    <string name="welcome_message">Chào mừng bạn đến với FirstApp. Vui lòng đăng nhập để tiếp tục.</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="btn_logout">Đăng xuất</string>
+    <string name="error_network">Lỗi mạng. Vui lòng thử lại.</string>
+    <string name="login_success">Đăng nhập thành công!</string>
+    <string name="select_language">Lựa chọn ngôn ngữ</string>
+    <string name="english">Tiếng Anh</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="japanese">Tiếng Nhật</string>
+</resources>

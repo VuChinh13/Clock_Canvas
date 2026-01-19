@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.sqrt
 
 class TestCoroutineActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class TestCoroutineActivity : AppCompatActivity() {
         // demoStatusJob()
         // demoJoinJob()
         // demoAsync2()
+        // demoWithContext()
 
         binding.btnClick2.setOnClickListener {
             Toast.makeText(this, "This is Button 2", Toast.LENGTH_SHORT).show()
@@ -140,6 +142,30 @@ class TestCoroutineActivity : AppCompatActivity() {
 
             Log.d("CheckJob", "Result: $prime1")
             Log.d("CheckJob", "Result: $prime2")
+        }
+    }
+
+    fun demoWithContext() {
+        lifecycleScope.launch {
+            val value1 = withContext(Dispatchers.Default) {
+                var countPrime2 = 0
+                for (i in 2..1_000) {
+                    if (isPrime(i)) countPrime2++
+                    Log.d("CheckJob", "Count 1: $countPrime2")
+                }
+                countPrime2
+            }
+
+            val value2 = withContext(Dispatchers.Default) {
+                var countPrime2 = 0
+                for (i in 2..1_000) {
+                    if (isPrime(i)) countPrime2++
+                    Log.d("CheckJob", "Count 2: $countPrime2")
+                }
+                countPrime2
+            }
+            Log.d("CheckJob", "RESULT 1: $value1")
+            Log.d("CheckJob", "RESULT 2: $value2")
         }
     }
 }
