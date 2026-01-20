@@ -2,6 +2,7 @@ package com.example.firstapp.testmutilanguage
 
 import android.os.Bundle
 import android.os.LocaleList
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -64,6 +65,7 @@ class TestMultiLanguageActivity : AppCompatActivity() {
 
     fun detectInitialLanguage(): Locale? {
         val locales = LocaleList.getDefault()
+        Log.d("Check", locales.toString())
 
         for (i in 0 until locales.size()) {
             val locale = locales[i]
@@ -76,35 +78,4 @@ class TestMultiLanguageActivity : AppCompatActivity() {
 
         return null
     }
-
-//    fun detectInitialLanguage(): Locale{
-//        val systemLocales = LocaleList.getDefault()
-//        val supportLocales = getSupportedLocales()
-//
-//        for (i in 0 until supportLocales.size){
-//            val systemLocale = systemLocales[i]
-//
-//            supportLocales.firstOrNull {
-//                it.language == systemLocale.language
-//            }?.let { return it }
-//        }
-//
-//        return supportLocales.firstOrNull() ?: Locale.getDefault()
-//    }
-
-//    fun getSupportedLocales(): List<Locale> =
-//        resources.getXml(R.xml.locales_config).use { parser ->
-//            generateSequence {
-//                if (parser.next() != XmlPullParser.START_TAG) null
-//                else if (parser.name == "locale")
-//                    parser.getAttributeValue(
-//                        "http://schemas.android.com/apk/res/android",
-//                        "name"
-//                    )
-//                else null
-//            }
-//                .filterNotNull()
-//                .map(Locale::forLanguageTag)
-//                .toList()
-//        }
 }
