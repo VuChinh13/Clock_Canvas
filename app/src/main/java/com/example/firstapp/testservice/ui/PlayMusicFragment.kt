@@ -32,14 +32,14 @@ class PlayMusicFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.tvTen.text = file?.name
         currentIndex = fileList.indexOfFirst { it.path == file?.path }
-        playMusic(currentIndex)
+        playMusic()
     }
 
-    private fun playMusic(index: Int) {
+    private fun playMusic() {
         val musicServiceIntent = Intent(requireContext(), MusicService::class.java)
-
+        musicServiceIntent.putExtra(IntentExtras.EXTRA_FILE, file)
+        requireContext().startForegroundService(musicServiceIntent)
     }
 }
