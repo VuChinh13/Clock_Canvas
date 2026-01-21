@@ -1,10 +1,8 @@
-package com.example.firstapp.testservice2
+package com.example.firstapp.testforegroundservice
 
-import android.app.ForegroundServiceStartNotAllowedException
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -21,32 +19,36 @@ class ForegroundServiceActivity : AppCompatActivity() {
         setContentView(binding.root)
         initListData()
 
-        binding.btnStartForeground.setOnClickListener {
-            try {
-                val data =
-                    Data(
-                        binding.etName.text.toString(),
-                        binding.etAge.text.toString().toIntOrNull() ?: 0
-                    )
-
-                val testForegroundServiceIntent = Intent(this, TestForegroundService::class.java)
-                testForegroundServiceIntent.putExtra("extra_data", data)
-                testForegroundServiceIntent.putExtra("extra_list_data", ArrayList(listData))
-                testForegroundServiceIntent.putExtra("extra_int", 10)
-
-                startForegroundService(testForegroundServiceIntent)
-            } catch (e: ForegroundServiceStartNotAllowedException) {
-                Log.e("Check", e.message.toString())
-            }
-        }
-
-        binding.btnStopForeground.setOnClickListener {
-            val testForegroundServiceIntent = Intent(this, TestForegroundService::class.java)
-            stopService(testForegroundServiceIntent)
-        }
+        startTestForegroundService()
+        stopTestForegroundService()
 
         binding.btnToast.setOnClickListener {
             Toast.makeText(this, "Đây là thông báo", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun startTestForegroundService() {
+        binding.btnStartForeground.setOnClickListener {
+            val data = Data(
+                binding.etName.text.toString(),
+                binding.etAge.text.toString().toIntOrNull() ?: 0
+            )
+
+            val testForegroundServiceIntent = Intent(this, TestForegroundService::class.java)
+            testForegroundServiceIntent.putExtra("extra_data", data)
+            testForegroundServiceIntent.putExtra("extra_list_data", ArrayList(listData))
+            testForegroundServiceIntent.putExtra("extra_int", 10)
+
+            //startForegroundService(testForegroundServiceIntent)
+            startService(testForegroundServiceIntent)
+        }
+    }
+
+    private fun stopTestForegroundService() {
+        binding.btnStopForeground.setOnClickListener {
+            val testForegroundServiceIntent = Intent(this, TestForegroundService::class.java)
+            stopService(testForegroundServiceIntent)
         }
     }
 

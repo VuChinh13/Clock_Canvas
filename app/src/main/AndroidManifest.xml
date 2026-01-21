@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstApp">
         <activity
-            android:name=".testservice2.ForegroundServiceActivity"
+            android:name=".testforegroundservice.ForegroundServiceActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name=".testservice2.TestForegroundService"
+            android:name=".testforegroundservice.TestForegroundService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
         <service

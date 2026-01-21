@@ -1,4 +1,4 @@
-package com.example.firstapp.testservice2
+package com.example.firstapp.testforegroundservice
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.example.firstapp.testservice2
+package com.example.firstapp.testforegroundservice
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -12,10 +12,13 @@ import androidx.core.app.NotificationCompat
 import com.example.firstapp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
 class TestForegroundService : Service() {
+    private val scope = CoroutineScope( Dispatchers.IO)
     private val tag = "Check"
     private val channelId = "music_service_channel"
     private val notificationManager by lazy {
@@ -24,7 +27,7 @@ class TestForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
+        // createNotificationChannel()
         Log.d(tag, "onCreate")
     }
 
@@ -44,8 +47,8 @@ class TestForegroundService : Service() {
         Log.d(tag, listData.toString())
         Log.d(tag, valueInt.toString())
 
-        startForeground(1, createNotification())
-        // noBlockMainThread()
+        //startForeground(1, createNotification())
+        noBlockMainThread()
         //blockMainThread()
         return START_NOT_STICKY
     }
@@ -54,19 +57,26 @@ class TestForegroundService : Service() {
         for (i in 2..1_000_000) {
             if (isPrime(i)) Log.d(tag, i.toString())
         }
+        stopSelf()
     }
 
     fun noBlockMainThread() {
-        CoroutineScope(Dispatchers.IO).launch {
-            for (i in 2..200_000) {
+        scope.launch {
+            for (i in 2..500_000) {
+                if (!isActive) {
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                    stopSelf()
+                    return@launch
+                }
                 if (isPrime(i)) Log.d(tag, i.toString())
             }
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
         }
     }
 
     fun isPrime(n: Int): Boolean {
         if (n < 2) return false
-
         for (i in 2..sqrt(n.toDouble()).toInt()) {
             if (n % i == 0) return false
         }
@@ -94,6 +104,7 @@ class TestForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
+        scope.cancel()
         super.onDestroy()
         Log.d(tag, "onDestroy")
     }
