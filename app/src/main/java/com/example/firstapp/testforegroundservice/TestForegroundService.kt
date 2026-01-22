@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.firstapp.R
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
 class TestForegroundService : Service() {
-    private val scope = CoroutineScope( Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO)
     private val tag = "Check"
     private val channelId = "music_service_channel"
     private val notificationManager by lazy {
@@ -27,10 +28,11 @@ class TestForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        // createNotificationChannel()
+        createNotificationChannel()
         Log.d(tag, "onCreate")
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
@@ -47,7 +49,7 @@ class TestForegroundService : Service() {
         Log.d(tag, listData.toString())
         Log.d(tag, valueInt.toString())
 
-        //startForeground(1, createNotification())
+        startForeground(1, createNotification())
         noBlockMainThread()
         //blockMainThread()
         return START_NOT_STICKY
@@ -57,10 +59,12 @@ class TestForegroundService : Service() {
         for (i in 2..1_000_000) {
             if (isPrime(i)) Log.d(tag, i.toString())
         }
+        stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 
     fun noBlockMainThread() {
+        var count = 0
         scope.launch {
             for (i in 2..500_000) {
                 if (!isActive) {
@@ -68,11 +72,21 @@ class TestForegroundService : Service() {
                     stopSelf()
                     return@launch
                 }
-                if (isPrime(i)) Log.d(tag, i.toString())
+                if (isPrime(i)) {
+                    count++
+                    Log.d(tag, i.toString())
+                }
             }
+            sendToActivity(count)
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
         }
+    }
+
+    fun sendToActivity(value: Int) {
+        val intent = Intent(ACTION_TASK_DONE)
+        intent.putExtra("result", value)
+        sendBroadcast(intent)
     }
 
     fun isPrime(n: Int): Boolean {
@@ -104,8 +118,8 @@ class TestForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
-        scope.cancel()
         super.onDestroy()
+        scope.cancel()
         Log.d(tag, "onDestroy")
     }
 }

@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstApp">
         <activity
+            android:name=".testfragment.TestFragmentActivity"
+            android:exported="true" />
+        <activity
             android:name=".testforegroundservice.ForegroundServiceActivity"
             android:exported="true">
             <intent-filter>
@@ -30,10 +33,6 @@
             android:name=".testforegroundservice.TestForegroundService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
-        <service
-            android:name=".testservice.MusicService"
-            android:exported="false"
-            android:foregroundServiceType="mediaPlayback" />
 
         <activity
             android:name=".testservice.ui.MainMusicActivity"
