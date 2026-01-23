@@ -1,9 +1,11 @@
 package com.example.firstapp.testfragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.firstapp.databinding.FragmentSecondaryBinding
 
@@ -13,6 +15,7 @@ class SecondaryFragment : Fragment() {
     private var result = 0
     private lateinit var binding: FragmentSecondaryBinding
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getExtra(arguments)
@@ -36,6 +39,7 @@ class SecondaryFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun getExtra(bundle: Bundle?) {
         val user = bundle?.getParcelable("extra_user", User::class.java)
         valueFirst = bundle?.getInt("extra_value_first", 0) ?: 0

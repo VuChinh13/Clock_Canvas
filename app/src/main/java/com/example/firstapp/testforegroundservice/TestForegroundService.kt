@@ -8,12 +8,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.firstapp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.sqrt
@@ -22,6 +22,10 @@ class TestForegroundService : Service() {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val tag = "Check"
     private val channelId = "music_service_channel"
+    private var data: Data? = null
+    private val NOTIFICATION_ID = 1
+    private val listData = arrayListOf<Data>()
+    private var valueInt = 0
     private val notificationManager by lazy {
         getSystemService(NotificationManager::class.java)
     }
@@ -32,7 +36,6 @@ class TestForegroundService : Service() {
         Log.d(tag, "onCreate")
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
@@ -40,19 +43,35 @@ class TestForegroundService : Service() {
     ): Int {
         Log.d(tag, "onStartCommand")
 
-        val data = intent?.getParcelableExtra("extra_data", Data::class.java)
-        val listData = intent?.getParcelableArrayListExtra("extra_list_data", Data::class.java)
-        val valueInt = intent?.getIntExtra("extra_int", 0)
+        getExtra(intent)
 
         Log.d(tag, data?.name ?: "name null")
         Log.d(tag, data?.age.toString())
         Log.d(tag, listData.toString())
         Log.d(tag, valueInt.toString())
 
-        startForeground(1, createNotification())
+        startForeground(NOTIFICATION_ID, createNotification(0))
         noBlockMainThread()
         //blockMainThread()
         return START_NOT_STICKY
+    }
+
+    fun getExtra(intent: Intent?) {
+        data =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent?.getParcelableExtra("extra_data", Data::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent?.getParcelableExtra("extra_data")
+            }
+        val newListData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableArrayListExtra("extra_list_data", Data::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent?.getParcelableArrayListExtra("extra_list_data")
+        }
+        listData.addAll(newListData ?: emptyList())
+        valueInt = intent?.getIntExtra("extra_int", 0) ?: 0
     }
 
     fun blockMainThread() {
@@ -66,18 +85,23 @@ class TestForegroundService : Service() {
     fun noBlockMainThread() {
         var count = 0
         scope.launch {
-            for (i in 2..500_000) {
+            for (i in 2..1_000) {
                 if (!isActive) {
                     stopForeground(STOP_FOREGROUND_REMOVE)
                     stopSelf()
                     return@launch
                 }
+                delay(100L)
                 if (isPrime(i)) {
                     count++
                     Log.d(tag, i.toString())
+                    sendToActivity(count)
+                    notificationManager.notify(
+                        NOTIFICATION_ID,
+                        createNotification(count)
+                    )
                 }
             }
-            sendToActivity(count)
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
         }
@@ -97,11 +121,12 @@ class TestForegroundService : Service() {
         return true
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification(count: Int): Notification {
         return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.image_music)
-            .setContentTitle("Service đang chạy đó")
-            .setContentText("Bạn đang chạy service")
+            .setContentTitle("Service đang chạy")
+            .setContentText("Số nguyên tố tìm được: $count")
+            .setOnlyAlertOnce(true)
             .build()
     }
 

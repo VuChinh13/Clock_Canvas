@@ -12,4 +12,6 @@
     <string name="app_name" translatable="false">Multi Language Passive</string>
     <string name="japanese">日本語</string>
     <string name="time" translatable="false">00:00</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

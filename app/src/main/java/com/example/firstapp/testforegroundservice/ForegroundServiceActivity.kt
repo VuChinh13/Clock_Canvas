@@ -1,11 +1,13 @@
 package com.example.firstapp.testforegroundservice
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -24,13 +26,26 @@ class ForegroundServiceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityService1Binding
     private lateinit var listData: MutableList<Data>
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityService1Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        registerReceiver(taskDoneReceiver, IntentFilter(ACTION_TASK_DONE), RECEIVER_NOT_EXPORTED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                taskDoneReceiver,
+                IntentFilter(ACTION_TASK_DONE),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(
+                taskDoneReceiver,
+                IntentFilter(ACTION_TASK_DONE)
+            )
+        }
+
         initListData()
         startTestForegroundService()
         stopTestForegroundService()
@@ -87,7 +102,8 @@ class ForegroundServiceActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(taskDoneReceiver)
+        Log.d("Check", "onDestroy Activity")
+        // unregisterReceiver(taskDoneReceiver)
         unregisterReceiver(airplaneModeReceiver)
     }
 }
