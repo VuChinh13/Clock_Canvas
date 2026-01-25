@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.firstapp.databinding.ActivityRoomBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RoomActivity : AppCompatActivity() {
@@ -23,12 +24,14 @@ class RoomActivity : AppCompatActivity() {
 
     fun demoInsert() {
         binding.btInsert.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 for (i in 0 until 10) {
                     val note = NoteEntity(
                         title = "title $i",
                         content = "Đây là nội dung $i",
-                        listTest = listOf("$i", "$i", "$i", "$i")
+                        listTest = listOf("$i", "$i", "$i", "$i"),
+                        test1 = "$i",
+                        test3 = null
                     )
                     AppDatabase.getInstance(this@RoomActivity)
                         .noteDao().insert(note)
@@ -39,7 +42,7 @@ class RoomActivity : AppCompatActivity() {
 
     fun demoGetAllData() {
         binding.btGetAll.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 val notes = AppDatabase.getInstance(this@RoomActivity).noteDao().getAll()
                 notes.forEach {
                     Log.d("Check", "${it.title} ,${it.content} ,${it.listTest}")
@@ -50,7 +53,7 @@ class RoomActivity : AppCompatActivity() {
 
     fun demoDelete(id: Int) {
         binding.btDeleteById.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 AppDatabase.getInstance(this@RoomActivity).noteDao().deleteById(id)
             }
         }
@@ -58,7 +61,7 @@ class RoomActivity : AppCompatActivity() {
 
     fun demoGetById(id: Int) {
         binding.btGetById.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 val note = AppDatabase.getInstance(this@RoomActivity).noteDao().getNoteById(id)
                 Log.d("Check", note.toString())
             }
@@ -67,7 +70,7 @@ class RoomActivity : AppCompatActivity() {
 
     fun demoDeleteAll() {
         binding.btDeleteAll.setOnClickListener {
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 AppDatabase.getInstance(this@RoomActivity).noteDao().deleteAll()
             }
         }

@@ -10,7 +10,8 @@ data class NoteEntity(
     val id: Int = 0,
     val title: String,
     val content: String,
-    val listTest: List<String>
-//    @ColumnInfo(name = "test1", defaultValue = "Chưa có dữ liệu")
-//    val test1: String
+    val listTest: List<String>,
+    @ColumnInfo(defaultValue = "N/A")
+    val test1: String,
+    val test3: String?
 )
